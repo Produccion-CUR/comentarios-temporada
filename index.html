@@ -1,0 +1,1388 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Feedback Temporada — Planta Curicó</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ─── Reset & Base ─── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  :root {
+    --green:       #1a7a4a;
+    --green-dark:  #0f5233;
+    --green-light: #e6f4ed;
+    --green-mid:   #2d9e65;
+    --cream:       #faf8f3;
+    --sand:        #f0ece0;
+    --ink:         #1c1c1a;
+    --ink-2:       #3d3d38;
+    --ink-3:       #6b6b63;
+    --ink-4:       #a5a59a;
+    --border:      rgba(28,28,26,0.10);
+    --border-med:  rgba(28,28,26,0.18);
+    --white:       #ffffff;
+    --danger:      #c0392b;
+    --danger-bg:   #fdf0ee;
+    --amber:       #b7600e;
+    --amber-bg:    #fef3e2;
+    --blue:        #1a5da8;
+    --blue-bg:     #eaf1fb;
+
+    --radius-sm:   6px;
+    --radius-md:   12px;
+    --radius-lg:   18px;
+    --radius-xl:   28px;
+
+    --shadow-sm: 0 1px 4px rgba(0,0,0,0.06);
+    --shadow-md: 0 4px 20px rgba(0,0,0,0.08);
+    --shadow-lg: 0 12px 48px rgba(0,0,0,0.12);
+
+    --font-display: 'DM Serif Display', Georgia, serif;
+    --font-body:    'DM Sans', system-ui, sans-serif;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background: var(--cream);
+    color: var(--ink);
+    min-height: 100vh;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ─── Views ─── */
+  .view { display: none; min-height: 100vh; }
+  .view.active { display: block; }
+
+  /* ─── Form View ─── */
+  #view-form {
+    background: var(--cream);
+  }
+
+  .form-hero {
+    background: var(--green);
+    position: relative;
+    overflow: hidden;
+    padding: 3rem 1.5rem 4rem;
+    text-align: center;
+  }
+  .form-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 40px,
+      rgba(255,255,255,0.025) 40px,
+      rgba(255,255,255,0.025) 80px
+    );
+  }
+  .form-hero .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.9);
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 100px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    padding: 5px 14px;
+    margin-bottom: 1.25rem;
+  }
+  .form-hero .badge svg { width: 13px; height: 13px; }
+  .form-hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3rem);
+    color: #fff;
+    line-height: 1.15;
+    margin-bottom: 0.75rem;
+  }
+  .form-hero h1 em { font-style: italic; }
+  .form-hero p {
+    color: rgba(255,255,255,0.75);
+    font-size: 15px;
+    max-width: 420px;
+    margin: 0 auto;
+    font-weight: 300;
+  }
+
+  .form-body {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 2rem 1.25rem 4rem;
+  }
+
+  .form-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 1.75rem;
+    margin-bottom: 1.25rem;
+    box-shadow: var(--shadow-sm);
+  }
+  .form-card-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.25rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .form-card-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: var(--radius-sm);
+    background: var(--green-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .form-card-icon svg { width: 18px; height: 18px; color: var(--green); }
+  .form-card-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--ink);
+  }
+  .form-card-sub {
+    font-size: 12px;
+    color: var(--ink-3);
+    margin-top: 2px;
+  }
+
+  .form-q {
+    margin-bottom: 1.25rem;
+  }
+  .form-q:last-child { margin-bottom: 0; }
+  .form-q label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink-2);
+    margin-bottom: 8px;
+  }
+  .q-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .q-dot.mejor   { background: #2d9e65; }
+  .q-dot.peor    { background: var(--danger); }
+  .q-dot.falto   { background: var(--amber); }
+  .q-dot.sobro   { background: var(--blue); }
+
+  textarea {
+    width: 100%;
+    min-height: 88px;
+    resize: vertical;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--ink);
+    background: var(--cream);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 12px 14px;
+    outline: none;
+    transition: border-color 0.15s, background 0.15s;
+    line-height: 1.6;
+  }
+  textarea:focus {
+    border-color: var(--green);
+    background: #fff;
+  }
+  textarea::placeholder { color: var(--ink-4); }
+
+  select {
+    width: 100%;
+    font-family: var(--font-body);
+    font-size: 14px;
+    color: var(--ink);
+    background: var(--cream);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 11px 14px;
+    outline: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%236b6b63' stroke-width='2.5'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    cursor: pointer;
+    transition: border-color 0.15s;
+  }
+  select:focus { border-color: var(--green); outline: none; }
+
+  .persona-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+    gap: 8px;
+  }
+  .persona-chip {
+    padding: 9px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    font-family: var(--font-body);
+    font-weight: 400;
+    cursor: pointer;
+    text-align: center;
+    background: var(--cream);
+    color: var(--ink-2);
+    transition: all 0.15s;
+    line-height: 1.3;
+  }
+  .persona-chip:hover { border-color: var(--green); background: var(--green-light); }
+  .persona-chip.selected { border-color: var(--green); background: var(--green-light); color: var(--green-dark); font-weight: 600; }
+  .no-personas { font-size: 13px; color: var(--ink-4); padding: 0.5rem 0; }
+
+  .btn-submit {
+    width: 100%;
+    padding: 15px;
+    background: var(--green);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-md);
+    font-family: var(--font-body);
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: background 0.15s, transform 0.1s;
+    letter-spacing: 0.01em;
+    margin-top: 1.5rem;
+  }
+  .btn-submit:hover { background: var(--green-dark); }
+  .btn-submit:active { transform: scale(0.98); }
+  .btn-submit:disabled { opacity: 0.55; cursor: default; }
+  .btn-submit svg { width: 18px; height: 18px; }
+
+  .form-footer {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+  .admin-link-btn {
+    background: none;
+    border: none;
+    font-family: var(--font-body);
+    font-size: 12px;
+    color: var(--ink-4);
+    cursor: pointer;
+    text-decoration: underline;
+    text-decoration-style: dotted;
+  }
+  .admin-link-btn:hover { color: var(--ink-3); }
+
+  /* Success */
+  .success-wrap {
+    text-align: center;
+    padding: 3rem 1rem;
+  }
+  .success-icon {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    background: var(--green-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+  }
+  .success-icon svg { width: 36px; height: 36px; color: var(--green); }
+  .success-wrap h2 {
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+    color: var(--ink);
+  }
+  .success-wrap p { font-size: 14px; color: var(--ink-3); max-width: 320px; margin: 0 auto 1.5rem; }
+  .btn-ghost {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 22px;
+    border: 1.5px solid var(--border-med);
+    border-radius: var(--radius-md);
+    background: transparent;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-2);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .btn-ghost:hover { background: var(--white); border-color: var(--green); color: var(--green); }
+
+  /* ─── Admin Login ─── */
+  #view-admin-login {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    background: var(--sand);
+    padding: 2rem 1rem;
+  }
+  #view-admin-login.active { display: flex; }
+  .login-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 2.25rem;
+    width: 100%;
+    max-width: 380px;
+    box-shadow: var(--shadow-md);
+  }
+  .login-card .logo-mark {
+    width: 48px;
+    height: 48px;
+    background: var(--green);
+    border-radius: var(--radius-sm);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.25rem;
+  }
+  .login-card .logo-mark svg { width: 24px; height: 24px; color: #fff; }
+  .login-card h2 { font-family: var(--font-display); font-size: 1.5rem; margin-bottom: 0.25rem; }
+  .login-card p { font-size: 13px; color: var(--ink-3); margin-bottom: 1.5rem; }
+  .input-wrap { margin-bottom: 0.875rem; }
+  .input-wrap label { display: block; font-size: 12px; font-weight: 500; color: var(--ink-3); margin-bottom: 6px; letter-spacing: 0.04em; text-transform: uppercase; }
+  .input-wrap input {
+    width: 100%;
+    font-family: var(--font-body);
+    font-size: 14px;
+    padding: 11px 14px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--cream);
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .input-wrap input:focus { border-color: var(--green); background: #fff; }
+  .error-msg { font-size: 12px; color: var(--danger); min-height: 18px; margin-bottom: 0.75rem; }
+  .btn-full {
+    width: 100%;
+    padding: 12px;
+    background: var(--green);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-md);
+    font-family: var(--font-body);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .btn-full:hover { background: var(--green-dark); }
+  .hint { font-size: 11px; color: var(--ink-4); margin-top: 1rem; text-align: center; }
+
+  /* ─── Admin Panel ─── */
+  #view-admin {
+    display: none;
+    background: var(--cream);
+    min-height: 100vh;
+  }
+  #view-admin.active { display: block; }
+
+  .admin-topbar {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 56px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .admin-topbar .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--ink);
+  }
+  .admin-topbar .brand-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--green);
+  }
+  .topbar-actions { display: flex; align-items: center; gap: 8px; }
+  .topbar-btn {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 14px;
+    border: 1px solid var(--border-med);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-2);
+    cursor: pointer;
+    transition: all 0.15s;
+    text-decoration: none;
+  }
+  .topbar-btn:hover { background: var(--sand); border-color: var(--border-med); }
+  .topbar-btn svg { width: 15px; height: 15px; }
+  .topbar-btn.green { background: var(--green); color: #fff; border-color: var(--green); }
+  .topbar-btn.green:hover { background: var(--green-dark); }
+
+  .admin-body { max-width: 900px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+
+  .section-heading {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-4);
+    margin-bottom: 0.75rem;
+    margin-top: 2rem;
+  }
+  .section-heading:first-child { margin-top: 0; }
+
+  .metrics-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 10px;
+    margin-bottom: 1.5rem;
+  }
+  .metric-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+  }
+  .metric-card .m-val {
+    font-size: 2rem;
+    font-weight: 600;
+    line-height: 1;
+    color: var(--ink);
+    margin-bottom: 4px;
+  }
+  .metric-card .m-lbl { font-size: 12px; color: var(--ink-3); }
+
+  .share-strip {
+    background: var(--green-light);
+    border: 1px solid rgba(26,122,74,0.2);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .share-strip svg { width: 18px; height: 18px; color: var(--green); flex-shrink: 0; }
+  .share-url { flex: 1; font-family: monospace; font-size: 13px; color: var(--green-dark); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0; }
+  .copy-btn {
+    padding: 7px 16px;
+    background: var(--green);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s;
+  }
+  .copy-btn:hover { background: var(--green-dark); }
+
+  /* Tabs */
+  .tab-bar {
+    display: flex;
+    gap: 2px;
+    background: var(--sand);
+    padding: 4px;
+    border-radius: var(--radius-sm);
+    margin-bottom: 1.25rem;
+    width: fit-content;
+  }
+  .tab-btn {
+    padding: 7px 18px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 400;
+    color: var(--ink-3);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .tab-btn.active {
+    background: var(--white);
+    color: var(--ink);
+    font-weight: 500;
+    box-shadow: var(--shadow-sm);
+  }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* Filter pills */
+  .filters {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+  }
+  .filter-pill {
+    padding: 5px 14px;
+    border-radius: 100px;
+    border: 1px solid var(--border-med);
+    background: transparent;
+    font-family: var(--font-body);
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink-3);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .filter-pill:hover { border-color: var(--green); color: var(--green); }
+  .filter-pill.active { background: var(--green); color: #fff; border-color: var(--green); }
+
+  /* Feedback cards */
+  .fb-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 0.75rem;
+    transition: box-shadow 0.15s;
+  }
+  .fb-card:hover { box-shadow: var(--shadow-sm); }
+  .fb-meta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 0.875rem;
+    flex-wrap: wrap;
+  }
+  .cat-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 3px 10px;
+    border-radius: 100px;
+  }
+  .cat-pill .dot { width: 6px; height: 6px; border-radius: 50%; }
+  .cat-mejor  { background: rgba(45,158,101,0.12); color: #0f5233; }
+  .cat-peor   { background: rgba(192,57,43,0.10);  color: #8b2218; }
+  .cat-falto  { background: rgba(183,96,14,0.10);  color: #7a3e06; }
+  .cat-sobro  { background: rgba(26,93,168,0.10);  color: #0f3d73; }
+  .cat-mejor .dot  { background: var(--green-mid); }
+  .cat-peor  .dot  { background: var(--danger); }
+  .cat-falto .dot  { background: var(--amber); }
+  .cat-sobro .dot  { background: var(--blue); }
+
+  .fb-time { font-size: 11px; color: var(--ink-4); margin-left: auto; }
+  .fb-blocks {}
+  .fb-block { margin-bottom: 0.75rem; }
+  .fb-block:last-child { margin-bottom: 0; }
+  .fb-block-lbl { font-size: 10px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-4); margin-bottom: 3px; }
+  .fb-block-text { font-size: 14px; color: var(--ink); line-height: 1.65; }
+
+  .del-btn {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 0.75rem;
+    padding: 4px 10px;
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    background: none;
+    font-family: var(--font-body);
+    font-size: 11px;
+    color: var(--ink-4);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .del-btn:hover { background: var(--danger-bg); color: var(--danger); border-color: rgba(192,57,43,0.2); }
+  .del-btn svg { width: 12px; height: 12px; }
+
+  .empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--ink-4);
+  }
+  .empty-state svg { width: 40px; height: 40px; margin-bottom: 0.75rem; opacity: 0.4; }
+
+  /* Settings */
+  .settings-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+  }
+  .settings-card h3 { font-size: 14px; font-weight: 600; margin-bottom: 0.25rem; }
+  .settings-card .desc { font-size: 13px; color: var(--ink-3); margin-bottom: 1rem; }
+  .settings-card.danger { border-color: rgba(192,57,43,0.25); }
+  .settings-card.danger h3 { color: var(--danger); }
+
+  .inline-form { display: flex; gap: 8px; }
+  .inline-form input {
+    flex: 1;
+    font-family: var(--font-body);
+    font-size: 14px;
+    padding: 9px 12px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--cream);
+    color: var(--ink);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .inline-form input:focus { border-color: var(--green); background: #fff; }
+  .btn-sm {
+    padding: 9px 16px;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.15s;
+    white-space: nowrap;
+  }
+  .btn-sm.green { background: var(--green); color: #fff; }
+  .btn-sm.green:hover { background: var(--green-dark); }
+  .btn-sm.danger { background: var(--danger-bg); color: var(--danger); border: 1px solid rgba(192,57,43,0.3); }
+  .btn-sm.danger:hover { background: rgba(192,57,43,0.15); }
+
+  .personas-list { margin-bottom: 0.75rem; }
+  .persona-row {
+    display: flex;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    gap: 10px;
+  }
+  .persona-row:last-child { border-bottom: none; }
+  .persona-row span { flex: 1; font-size: 14px; }
+  .persona-row button {
+    background: none;
+    border: none;
+    color: var(--ink-4);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    transition: all 0.15s;
+  }
+  .persona-row button:hover { color: var(--danger); background: var(--danger-bg); }
+  .persona-row button svg { width: 15px; height: 15px; }
+
+  .gs-config {
+    background: var(--cream);
+    border-radius: var(--radius-sm);
+    padding: 1rem;
+    font-family: monospace;
+    font-size: 12px;
+    color: var(--ink-2);
+    word-break: break-all;
+    line-height: 1.7;
+    margin-bottom: 0.75rem;
+    border: 1px solid var(--border);
+  }
+  .gs-config b { color: var(--green-dark); }
+  .status-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin-right: 6px;
+  }
+  .status-dot.ok { background: var(--green); }
+  .status-dot.err { background: var(--danger); }
+  .status-dot.warn { background: var(--amber); }
+
+  /* Spinner */
+  .spinner {
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255,255,255,0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* Fade in */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .form-card, .fb-card { animation: fadeUp 0.3s ease both; }
+
+  /* Toast */
+  #toast {
+    position: fixed;
+    bottom: 1.5rem;
+    left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--ink);
+    color: #fff;
+    padding: 10px 22px;
+    border-radius: 100px;
+    font-size: 13px;
+    font-weight: 500;
+    z-index: 999;
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  #toast.show { transform: translateX(-50%) translateY(0); }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .form-hero { padding: 2.5rem 1rem 3rem; }
+    .form-card { padding: 1.25rem; }
+    .admin-topbar { padding: 0 1rem; }
+    .admin-body { padding: 1.25rem 1rem 3rem; }
+    .persona-grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); }
+  }
+</style>
+</head>
+<body>
+
+<div id="toast"></div>
+
+<!-- ══════════════════════════════════════════════════
+     VIEW: FORM
+══════════════════════════════════════════════════ -->
+<div id="view-form" class="view active">
+  <div class="form-hero">
+    <div class="badge">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      100% anónimo
+    </div>
+    <h1>¿Cómo fue<br><em>la temporada?</em></h1>
+    <p>Tu opinión es importante. Comparte lo que sentiste de forma honesta y anónima.</p>
+  </div>
+
+  <div class="form-body">
+    <div id="form-main">
+      <!-- Temporada -->
+      <div class="form-card">
+        <div class="form-card-header">
+          <div class="form-card-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          </div>
+          <div>
+            <div class="form-card-title">Sobre la temporada</div>
+            <div class="form-card-sub">Reflexiona sobre los últimos meses de trabajo</div>
+          </div>
+        </div>
+        <div class="form-q">
+          <label><span class="q-dot mejor"></span>¿Qué fue lo mejor?</label>
+          <textarea id="f-mejor" placeholder="Lo que más disfrutaste, lo que funcionó bien, logros del equipo..."></textarea>
+        </div>
+        <div class="form-q">
+          <label><span class="q-dot peor"></span>¿Qué fue lo peor o más difícil?</label>
+          <textarea id="f-peor" placeholder="Problemas, fricciones, situaciones que deberían mejorar..."></textarea>
+        </div>
+        <div class="form-q">
+          <label><span class="q-dot falto"></span>¿Qué faltó?</label>
+          <textarea id="f-falto" placeholder="Recursos, comunicación, procesos, herramientas que habrían ayudado..."></textarea>
+        </div>
+        <div class="form-q">
+          <label><span class="q-dot sobro"></span>¿Qué sobró?</label>
+          <textarea id="f-sobro" placeholder="Lo que no aportó, generó ruido o debería eliminarse..."></textarea>
+        </div>
+      </div>
+
+      <!-- Persona -->
+      <div class="form-card" id="card-persona" style="display:none;">
+        <div class="form-card-header">
+          <div class="form-card-icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <div>
+            <div class="form-card-title">Feedback para alguien del equipo</div>
+            <div class="form-card-sub">Opcional — un comentario constructivo para una persona</div>
+          </div>
+        </div>
+        <div class="form-q" style="margin-bottom:1rem;">
+          <label>Selecciona a quién va dirigido</label>
+          <div class="persona-grid" id="persona-chips"></div>
+        </div>
+        <div class="form-q">
+          <label>Tu comentario constructivo</label>
+          <textarea id="f-persona-msg" placeholder="Fortalezas, áreas de mejora, reconocimiento personal..."></textarea>
+        </div>
+      </div>
+
+      <button class="btn-submit" id="btn-send" onclick="submitFeedback()">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        Enviar feedback anónimo
+      </button>
+
+      <div class="form-footer">
+        <button class="admin-link-btn" onclick="showAdminLogin()">Panel de administrador</button>
+      </div>
+    </div>
+
+    <div id="form-success" style="display:none;">
+      <div class="success-wrap">
+        <div class="success-icon">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+        </div>
+        <h2>¡Gracias por tu aporte!</h2>
+        <p>Tu feedback fue enviado de forma completamente anónima y ya está disponible para el equipo.</p>
+        <button class="btn-ghost" onclick="resetForm()">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-4.27"/></svg>
+          Enviar otro feedback
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     VIEW: ADMIN LOGIN
+══════════════════════════════════════════════════ -->
+<div id="view-admin-login" class="view">
+  <div class="login-card">
+    <div class="logo-mark">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    </div>
+    <h2>Panel de admin</h2>
+    <p>Ingresa tu contraseña para revisar los comentarios recibidos.</p>
+    <div class="input-wrap">
+      <label>Contraseña</label>
+      <input type="password" id="pwd-input" placeholder="••••••••" onkeydown="if(event.key==='Enter')checkPassword()" autocomplete="current-password" />
+    </div>
+    <div class="error-msg" id="pwd-error"></div>
+    <button class="btn-full" onclick="checkPassword()">Ingresar</button>
+    <div style="margin-top:10px;">
+      <button class="admin-link-btn" onclick="showView('view-form')" style="font-size:12px;color:var(--ink-4);">← Volver al formulario</button>
+    </div>
+    <p class="hint">Contraseña por defecto: <strong>comfrut2025</strong></p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════
+     VIEW: ADMIN PANEL
+══════════════════════════════════════════════════ -->
+<div id="view-admin" class="view">
+  <div class="admin-topbar">
+    <div class="brand">
+      <span class="brand-dot"></span>
+      Feedback Temporada — Admin
+    </div>
+    <div class="topbar-actions">
+      <a id="sheets-link" href="#" target="_blank" class="topbar-btn green" style="display:none;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+        Ver Google Sheet
+      </a>
+      <button class="topbar-btn" onclick="showView('view-form')">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><polyline points="15 18 9 12 15 6"/></svg>
+        Formulario
+      </button>
+    </div>
+  </div>
+
+  <div class="admin-body">
+    <!-- Share strip -->
+    <div class="share-strip">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+      <span class="share-url" id="share-url-display">https://tudominio.github.io/feedback</span>
+      <button class="copy-btn" onclick="copyShareLink()">Copiar link</button>
+    </div>
+
+    <!-- Metrics -->
+    <p class="section-heading">Resumen</p>
+    <div class="metrics-grid" id="metrics-grid"></div>
+
+    <!-- Tabs -->
+    <div class="tab-bar">
+      <button class="tab-btn active" onclick="switchTab('panel-general', this)">Temporada</button>
+      <button class="tab-btn" onclick="switchTab('panel-personas', this)">Por persona</button>
+      <button class="tab-btn" onclick="switchTab('panel-settings', this)">Ajustes</button>
+    </div>
+
+    <!-- Tab: General -->
+    <div id="panel-general" class="tab-panel active">
+      <div class="filters" id="general-filters">
+        <button class="filter-pill active" onclick="setFilter('all',this)">Todos</button>
+        <button class="filter-pill" onclick="setFilter('mejor',this)">Lo mejor</button>
+        <button class="filter-pill" onclick="setFilter('peor',this)">Lo peor</button>
+        <button class="filter-pill" onclick="setFilter('falto',this)">Lo que faltó</button>
+        <button class="filter-pill" onclick="setFilter('sobro',this)">Lo que sobró</button>
+      </div>
+      <div id="general-list"></div>
+    </div>
+
+    <!-- Tab: Por persona -->
+    <div id="panel-personas" class="tab-panel">
+      <div class="filters" id="persona-filters"></div>
+      <div id="personas-list-feed"></div>
+    </div>
+
+    <!-- Tab: Ajustes -->
+    <div id="panel-settings" class="tab-panel">
+
+      <!-- Google Sheets config -->
+      <div class="settings-card">
+        <h3>Google Sheets</h3>
+        <p class="desc">Conecta la app con tu hoja de cálculo para guardar todos los feedbacks automáticamente. Sigue los pasos del archivo <code>README.md</code> incluido.</p>
+        <div class="gs-config" id="gs-status-box">
+          <span class="status-dot warn"></span><b>Sin configurar</b> — Ingresa la URL de tu Apps Script abajo.
+        </div>
+        <div class="input-wrap" style="margin-bottom:0.75rem;">
+          <label>URL del Apps Script (Web App)</label>
+          <input type="url" id="gs-url-input" placeholder="https://script.google.com/macros/s/XXXX/exec" />
+        </div>
+        <div class="input-wrap" style="margin-bottom:0.75rem;">
+          <label>ID del Google Sheet (para el botón de acceso rápido)</label>
+          <input type="text" id="gs-id-input" placeholder="1BxiMVs0XRA5nFMdKvBdBZjgmUUqptlbs74OgVE2upms" />
+        </div>
+        <button class="btn-sm green" onclick="saveGsConfig()">Guardar configuración</button>
+        <button class="btn-sm" style="margin-left:8px;border:1px solid var(--border-med);background:transparent;color:var(--ink-2);" onclick="testGsConnection()">Probar conexión</button>
+      </div>
+
+      <!-- Equipo -->
+      <div class="settings-card">
+        <h3>Personas del equipo</h3>
+        <p class="desc">Agrega los nombres para que aparezcan como opciones en el formulario.</p>
+        <div class="personas-list" id="personas-mgmt"></div>
+        <div class="inline-form">
+          <input type="text" id="new-persona-input" placeholder="Nombre completo..." onkeydown="if(event.key==='Enter')addPersona()" />
+          <button class="btn-sm green" onclick="addPersona()">Agregar</button>
+        </div>
+      </div>
+
+      <!-- Contraseña -->
+      <div class="settings-card">
+        <h3>Cambiar contraseña</h3>
+        <p class="desc">La contraseña protege el acceso al panel de administrador.</p>
+        <div class="inline-form">
+          <input type="password" id="new-pwd-input" placeholder="Nueva contraseña (mín. 6 caracteres)" />
+          <button class="btn-sm green" onclick="changePwd()">Guardar</button>
+        </div>
+      </div>
+
+      <!-- Danger -->
+      <div class="settings-card danger">
+        <h3>Zona de peligro</h3>
+        <p class="desc">Elimina todos los comentarios almacenados localmente. No afecta los datos en Google Sheets.</p>
+        <button class="btn-sm danger" onclick="clearAll()">Borrar todo el feedback local</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ══════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════
+const STORAGE_KEY = 'cfr_feedback_v2';
+let state = {
+  feedbacks:   [],
+  personas:    [],
+  password:    'comfrut2025',
+  gsUrl:       '',
+  gsSheetId:   '',
+  currentFilter: 'all',
+  personaFilter: 'all'
+};
+
+function saveLocal() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch(e){}
+}
+function loadLocal() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (raw) { const s = JSON.parse(raw); Object.assign(state, s); }
+  } catch(e){}
+}
+
+// ══════════════════════════════════════════════════
+// VIEWS
+// ══════════════════════════════════════════════════
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+function showAdminLogin() {
+  document.getElementById('pwd-error').textContent = '';
+  document.getElementById('pwd-input').value = '';
+  showView('view-admin-login');
+}
+function checkPassword() {
+  const v = document.getElementById('pwd-input').value;
+  if (v === state.password) {
+    showView('view-admin');
+    renderAdmin();
+  } else {
+    document.getElementById('pwd-error').textContent = 'Contraseña incorrecta.';
+  }
+}
+
+// ══════════════════════════════════════════════════
+// FORM
+// ══════════════════════════════════════════════════
+let selectedPersona = null;
+
+function renderPersonaChips() {
+  const el = document.getElementById('persona-chips');
+  const card = document.getElementById('card-persona');
+  if (!el) return;
+  if (!state.personas.length) { card.style.display='none'; return; }
+  card.style.display = 'block';
+  el.innerHTML = state.personas.map(p =>
+    `<div class="persona-chip${selectedPersona===p?' selected':''}" onclick="selectPersona(this,'${esc(p)}')">${esc(p)}</div>`
+  ).join('');
+}
+
+function selectPersona(el, name) {
+  selectedPersona = selectedPersona === name ? null : name;
+  renderPersonaChips();
+  if (selectedPersona) el.classList.add('selected');
+}
+
+async function submitFeedback() {
+  const mejor    = document.getElementById('f-mejor').value.trim();
+  const peor     = document.getElementById('f-peor').value.trim();
+  const falto    = document.getElementById('f-falto').value.trim();
+  const sobro    = document.getElementById('f-sobro').value.trim();
+  const pMsg     = document.getElementById('f-persona-msg').value.trim();
+
+  if (!mejor && !peor && !falto && !sobro && !pMsg) {
+    showToast('Completa al menos un campo antes de enviar.');
+    return;
+  }
+
+  const btn = document.getElementById('btn-send');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spinner"></div> Enviando...';
+
+  const entry = {
+    id:         Date.now(),
+    ts:         new Date().toISOString(),
+    mejor, peor, falto, sobro,
+    persona:    selectedPersona || '',
+    personaMsg: pMsg
+  };
+
+  // Save local
+  state.feedbacks.push(entry);
+  saveLocal();
+
+  // Send to Google Sheets
+  if (state.gsUrl) {
+    try {
+      await fetch(state.gsUrl, {
+        method: 'POST',
+        mode:   'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(entry)
+      });
+    } catch(e) { console.warn('GS error:', e); }
+  }
+
+  btn.disabled = false;
+  btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:18px;height:18px;"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>Enviar feedback anónimo';
+
+  document.getElementById('form-main').style.display = 'none';
+  document.getElementById('form-success').style.display = 'block';
+}
+
+function resetForm() {
+  ['f-mejor','f-peor','f-falto','f-sobro','f-persona-msg'].forEach(id => {
+    document.getElementById(id).value = '';
+  });
+  selectedPersona = null;
+  renderPersonaChips();
+  document.getElementById('form-main').style.display = 'block';
+  document.getElementById('form-success').style.display = 'none';
+}
+
+// ══════════════════════════════════════════════════
+// ADMIN
+// ══════════════════════════════════════════════════
+function renderAdmin() {
+  // Share URL
+  document.getElementById('share-url-display').textContent = window.location.href.replace(/[?#].*$/,'');
+
+  // Sheets link
+  if (state.gsSheetId) {
+    const lnk = document.getElementById('sheets-link');
+    lnk.href = `https://docs.google.com/spreadsheets/d/${state.gsSheetId}`;
+    lnk.style.display = 'flex';
+  }
+
+  renderMetrics();
+  renderGeneralList();
+  renderSettings();
+}
+
+function renderMetrics() {
+  const total    = state.feedbacks.length;
+  const withPers = state.feedbacks.filter(f => f.persona).length;
+  const better   = state.feedbacks.filter(f => f.mejor).length;
+  const worse    = state.feedbacks.filter(f => f.peor).length;
+  document.getElementById('metrics-grid').innerHTML = `
+    <div class="metric-card"><div class="m-val">${total}</div><div class="m-lbl">Respuestas totales</div></div>
+    <div class="metric-card"><div class="m-val">${better}</div><div class="m-lbl">Con "lo mejor"</div></div>
+    <div class="metric-card"><div class="m-val">${worse}</div><div class="m-lbl">Con "lo peor"</div></div>
+    <div class="metric-card"><div class="m-val">${withPers}</div><div class="m-lbl">Feedback individual</div></div>`;
+}
+
+const catInfo = {
+  mejor: { label: 'Lo mejor',   cls: 'cat-mejor' },
+  peor:  { label: 'Lo peor',    cls: 'cat-peor'  },
+  falto: { label: 'Lo que faltó', cls: 'cat-falto' },
+  sobro: { label: 'Lo que sobró', cls: 'cat-sobro' }
+};
+
+function setFilter(f, btn) {
+  state.currentFilter = f;
+  document.querySelectorAll('#general-filters .filter-pill').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderGeneralList();
+}
+
+function renderGeneralList() {
+  const el = document.getElementById('general-list');
+  const f  = state.currentFilter;
+  const cats = ['mejor','peor','falto','sobro'];
+  const items = [...state.feedbacks].reverse().filter(fb => {
+    if (f === 'all') return cats.some(c => fb[c]);
+    return fb[f];
+  });
+  if (!items.length) {
+    el.innerHTML = `<div class="empty-state"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><p>Aún no hay respuestas.</p></div>`;
+    return;
+  }
+  el.innerHTML = items.map(fb => {
+    const shownCats = f === 'all' ? cats.filter(c => fb[c]) : [f];
+    const pills = shownCats.map(c =>
+      `<span class="cat-pill ${catInfo[c].cls}"><span class="dot"></span>${catInfo[c].label}</span>`
+    ).join('');
+    const blocks = shownCats.map(c =>
+      `<div class="fb-block"><div class="fb-block-lbl">${catInfo[c].label}</div><div class="fb-block-text">${esc(fb[c])}</div></div>`
+    ).join('');
+    return `<div class="fb-card">
+      <div class="fb-meta">${pills}<span class="fb-time">${fmtDate(fb.ts)}</span></div>
+      <div class="fb-blocks">${blocks}</div>
+      <button class="del-btn" onclick="deleteFb(${fb.id})">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+        Eliminar
+      </button>
+    </div>`;
+  }).join('');
+}
+
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'panel-personas') renderPersonasTab();
+  if (id === 'panel-settings') renderSettings();
+}
+
+function renderPersonasTab() {
+  const withP = state.feedbacks.filter(f => f.persona && f.personaMsg);
+  const allPersonas = [...new Set(withP.map(f => f.persona))];
+
+  const bar = document.getElementById('persona-filters');
+  bar.innerHTML = `<button class="filter-pill active" onclick="setPersonaFilter('all',this)">Todos</button>`
+    + allPersonas.map(p => `<button class="filter-pill" onclick="setPersonaFilter('${esc(p)}',this)">${esc(p)}</button>`).join('');
+
+  state.personaFilter = 'all';
+  renderPersonasFeed();
+}
+
+function setPersonaFilter(p, btn) {
+  state.personaFilter = p;
+  document.querySelectorAll('#persona-filters .filter-pill').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderPersonasFeed();
+}
+
+function renderPersonasFeed() {
+  const el = document.getElementById('personas-list-feed');
+  const items = [...state.feedbacks].reverse().filter(f =>
+    f.persona && f.personaMsg &&
+    (state.personaFilter === 'all' || f.persona === state.personaFilter)
+  );
+  if (!items.length) {
+    el.innerHTML = `<div class="empty-state"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><p>No hay feedback individual aún.</p></div>`;
+    return;
+  }
+  el.innerHTML = items.map(fb => `
+    <div class="fb-card">
+      <div class="fb-meta">
+        <span class="cat-pill cat-mejor"><span class="dot"></span>${esc(fb.persona)}</span>
+        <span class="fb-time">${fmtDate(fb.ts)}</span>
+      </div>
+      <div class="fb-block-text">${esc(fb.personaMsg)}</div>
+      <button class="del-btn" onclick="deleteFb(${fb.id});renderPersonasFeed();">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="12" height="12"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg>
+        Eliminar
+      </button>
+    </div>`).join('');
+}
+
+function renderSettings() {
+  // GS URL
+  const ui = document.getElementById('gs-url-input');
+  const gi = document.getElementById('gs-id-input');
+  if (ui) ui.value = state.gsUrl || '';
+  if (gi) gi.value = state.gsSheetId || '';
+
+  // Status
+  const box = document.getElementById('gs-status-box');
+  if (box) {
+    if (state.gsUrl) {
+      box.innerHTML = `<span class="status-dot ok"></span><b>Configurado</b> — ${state.gsUrl.slice(0,60)}...`;
+    } else {
+      box.innerHTML = `<span class="status-dot warn"></span><b>Sin configurar</b> — Ingresa la URL de tu Apps Script abajo.`;
+    }
+  }
+
+  // Personas mgmt
+  const el = document.getElementById('personas-mgmt');
+  if (el) {
+    el.innerHTML = state.personas.length
+      ? state.personas.map(p => `
+          <div class="persona-row">
+            <span>${esc(p)}</span>
+            <button onclick="removePersona('${esc(p)}')">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+          </div>`).join('')
+      : '<p style="font-size:13px;color:var(--ink-4);margin-bottom:0.75rem;">No hay personas aún.</p>';
+  }
+}
+
+function saveGsConfig() {
+  state.gsUrl     = document.getElementById('gs-url-input').value.trim();
+  state.gsSheetId = document.getElementById('gs-id-input').value.trim();
+  saveLocal();
+  renderSettings();
+  if (state.gsSheetId) {
+    const lnk = document.getElementById('sheets-link');
+    lnk.href = `https://docs.google.com/spreadsheets/d/${state.gsSheetId}`;
+    lnk.style.display = 'flex';
+  }
+  showToast('Configuración guardada ✓');
+}
+
+async function testGsConnection() {
+  if (!state.gsUrl) { showToast('Primero ingresa la URL del Apps Script.'); return; }
+  showToast('Probando conexión...');
+  try {
+    await fetch(state.gsUrl + '?test=1', { mode: 'no-cors' });
+    showToast('Conexión exitosa ✓');
+  } catch(e) {
+    showToast('Error de conexión. Revisa la URL.');
+  }
+}
+
+function addPersona() {
+  const input = document.getElementById('new-persona-input');
+  const name  = input.value.trim();
+  if (!name) return;
+  if (state.personas.includes(name)) { showToast('Esa persona ya está en el equipo.'); return; }
+  state.personas.push(name);
+  saveLocal();
+  input.value = '';
+  renderSettings();
+  renderPersonaChips();
+  renderMetrics();
+  showToast(`${name} agregado/a ✓`);
+}
+
+function removePersona(name) {
+  state.personas = state.personas.filter(p => p !== name);
+  saveLocal();
+  renderSettings();
+  renderPersonaChips();
+}
+
+function changePwd() {
+  const v = document.getElementById('new-pwd-input').value;
+  if (v.length < 6) { showToast('La contraseña debe tener al menos 6 caracteres.'); return; }
+  state.password = v;
+  saveLocal();
+  document.getElementById('new-pwd-input').value = '';
+  showToast('Contraseña actualizada ✓');
+}
+
+function deleteFb(id) {
+  if (!confirm('¿Eliminar este comentario?')) return;
+  state.feedbacks = state.feedbacks.filter(f => f.id !== id);
+  saveLocal();
+  renderAdmin();
+}
+
+function clearAll() {
+  if (!confirm('¿Borrar TODOS los comentarios locales? Esta acción no afecta Google Sheets.')) return;
+  state.feedbacks = [];
+  saveLocal();
+  renderAdmin();
+  showToast('Feedback local eliminado.');
+}
+
+// ══════════════════════════════════════════════════
+// UTILS
+// ══════════════════════════════════════════════════
+function copyShareLink() {
+  const url = window.location.href.replace(/[?#].*$/,'');
+  navigator.clipboard.writeText(url).then(() => showToast('Link copiado ✓'));
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+function esc(s) {
+  return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function fmtDate(ts) {
+  try {
+    return new Date(ts).toLocaleString('es-CL',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+  } catch(e) { return ''; }
+}
+
+// ══════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════
+loadLocal();
+renderPersonaChips();
+</script>
+</body>
+</html>
