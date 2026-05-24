@@ -375,12 +375,31 @@ textarea::placeholder{color:var(--ink-4);}
 
 <script>
 // ══════════════════════════════════════════════════
-// CONFIG LOCAL (solo password y gsUrl/gsId)
+// ⚙️  CONFIGURACIÓN — edita estas dos líneas
+// ══════════════════════════════════════════════════
+const GS_URL = 'https://script.google.com/macros/s/AKfycbyFFR2NQ3KuvPNGRX5jhiS3epHYhet6YifCoIs7mkLQRt5pC2uEz_kweuFrLUX_RiFYdg/exec';
+const GS_ID  = '';  // opcional: ID del Sheet para el botón de acceso rápido
+
+// ══════════════════════════════════════════════════
+// CONFIG LOCAL (password + override desde admin)
 // ══════════════════════════════════════════════════
 const LS = 'cfr_v3';
-let cfg = { pw:'comfrut2025', gsUrl:'', gsId:'' };
+// Valores por defecto vienen del código (funcionan en todos los dispositivos).
+// El panel de admin puede sobreescribirlos en localStorage.
+let cfg = { pw:'comfrut2025', gsUrl: GS_URL, gsId: GS_ID };
 function saveCfg(){ try{ localStorage.setItem(LS, JSON.stringify(cfg)); }catch(e){} }
-function loadCfg(){ try{ const r=localStorage.getItem(LS); if(r) Object.assign(cfg, JSON.parse(r)); }catch(e){} }
+function loadCfg(){
+  try{
+    const r = localStorage.getItem(LS);
+    if(r){
+      const saved = JSON.parse(r);
+      // Solo sobreescribe gsUrl/gsId si el admin los cambió explícitamente
+      if(saved.gsUrl && saved.gsUrl !== GS_URL) cfg.gsUrl = saved.gsUrl;
+      if(saved.gsId  && saved.gsId  !== GS_ID)  cfg.gsId  = saved.gsId;
+      if(saved.pw)  cfg.pw = saved.pw;
+    }
+  }catch(e){}
+}
 
 // runtime
 let personas=[], feedbacks=[], selP=null, curF='all', curP='all';
