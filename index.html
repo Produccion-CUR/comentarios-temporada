@@ -269,7 +269,6 @@ textarea::placeholder{color:var(--ink-4);}
     <div class="err" id="pwd-err"></div>
     <button class="btn-full" onclick="login()">Ingresar</button>
     <div style="margin-top:10px;"><button class="lnk-btn" style="color:var(--ink-4);" onclick="showView('view-form')">← Volver al formulario</button></div>
-    <p class="hint">Contraseña por defecto: <strong>comfrut2025</strong></p>
   </div>
 </div>
 
@@ -386,7 +385,7 @@ const GS_ID  = '';  // opcional: ID del Sheet para el botón de acceso rápido
 const LS = 'cfr_v3';
 // Valores por defecto vienen del código (funcionan en todos los dispositivos).
 // El panel de admin puede sobreescribirlos en localStorage.
-let cfg = { pw:'comfrut2025', gsUrl: GS_URL, gsId: GS_ID };
+let cfg = { pw:'Dragon12$', gsUrl: GS_URL, gsId: GS_ID };
 function saveCfg(){ try{ localStorage.setItem(LS, JSON.stringify(cfg)); }catch(e){} }
 function loadCfg(){
   try{
